@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0F1A14">
+<title>Sistema Heimdall: detección predictiva de incendios forestales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0F1A14;--panel:#1A2F22;--line:#2C4636;--ink:#F2F6F3;--muted:#9DB8A5;
+  --green:#2ED07A;--fire:#FF6B35;
+  --head:"Archivo Black","Arial Black",Impact,sans-serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.05rem/1.6 var(--body)}
+main{max-width:640px;margin:0 auto;padding:2.2rem 1.3rem 3rem}
+h1{font:400 clamp(2.4rem,11vw,3.6rem)/1 var(--head);margin:0 0 .6rem;text-transform:uppercase;letter-spacing:.01em}
+h2{font:400 1.7rem/1.15 var(--head);margin:3.2rem 0 1.1rem;padding-bottom:.6rem;border-bottom:3px solid var(--fire)}
+h3{font:400 1.15rem/1.2 var(--head);margin:0 0 .3rem}
+p{margin:0 0 1rem}
+.sub{color:var(--green);font-style:italic;margin:0 0 2rem}
+.big{font:400 clamp(6rem,34vw,10rem)/.85 var(--head);color:var(--fire);margin:0}
+.big-cap{margin:.4rem 0 2rem;font-size:1.15rem;color:var(--ink)}
+.band{background:var(--panel);border-left:5px solid var(--green);padding:1.1rem 1.2rem}
+.band strong{display:block;font-size:1.3rem;color:var(--green);margin-bottom:.2rem}
+.band span{color:var(--fire);font-style:italic}
+ul.plain{padding:0;margin:0 0 1.4rem;list-style:none}
+ul.plain li{padding:.2rem 0 .8rem 1.1rem;border-left:3px solid var(--line)}
+.punch{font-weight:600;color:var(--green);font-style:italic;margin:0}
+.box{background:var(--panel);border:1px solid var(--line);padding:1.1rem 1.2rem;margin-bottom:1rem}
+.box.hot{border-color:var(--fire)}
+.box.ok{border-color:var(--green)}
+.box h3{color:var(--fire)}
+.box.ok h3{color:var(--green)}
+.box em{display:block;color:var(--muted);margin-bottom:.6rem}
+.box p:last-child{margin-bottom:0}
+.arrow{text-align:center;font-size:1.6rem;color:var(--fire);margin:0 0 1rem}
+.pair{display:grid;gap:1rem;grid-template-columns:1fr}
+.pair .box{margin:0}
+.keys{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+.keys small{display:block;color:var(--muted);font-size:.85rem}
+.keys b{font-weight:600}
+.prog{margin:0 0 1.1rem}
+.prog-top{display:flex;justify-content:space-between;gap:1rem;font-weight:600;margin-bottom:.2rem}
+.prog-top span:last-child{font-family:var(--head);font-weight:400}
+.prog p{color:var(--muted);font-size:.95rem;margin:.35rem 0 0}
+.track{height:12px;background:var(--panel);border:1px solid var(--line)}
+.fill{height:100%;width:var(--v);background:var(--green);animation:grow 1.2s ease-out both}
+.fill.fire{background:var(--fire)}
+@keyframes grow{from{width:0}}
+.pending .prog-top{color:var(--muted)}
+.note{color:var(--green);font-style:italic;margin-top:1.6rem}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:.7rem 1rem;background:var(--panel);border-left:5px solid var(--green);margin-bottom:.6rem}
+.row b{font-family:var(--head);font-weight:400;white-space:nowrap}
+.row.total{border-left-color:var(--fire)}
+.row.total b{color:var(--fire)}
+.cost{font-family:var(--head);font-size:clamp(2rem,9vw,2.8rem);line-height:1;color:var(--fire);margin:.2rem 0 .4rem}
+.closing{margin:2rem 0 0;font-size:1.3rem;color:var(--green);font-style:italic;text-align:center}
+footer{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+footer p{margin:0 0 .3rem}
+@media (min-width:600px){.pair{grid-template-columns:1fr 1fr}}
+@media (prefers-reduced-motion:reduce){.fill{animation:none}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Sistema Heimdall</h1>
+  <p class="sub">Detección predictiva de incendios forestales</p>
+
+  <p class="big">925</p>
+  <p class="big-cap">incendios forestales en Jalisco, temporada 2025</p>
+  <div class="band">
+    <strong>Seguimos reaccionando.</strong>
+    <span>El problema no es el fuego, es la falta de anticipación.</span>
+  </div>
+
+  <h2>Problemática</h2>
+  <p class="punch" style="color:var(--ink);font-style:normal">Las soluciones actuales no están diseñadas para prevenir.</p>
+  <ul class="plain">
+    <li>El Bosque La Primavera, pulmón urbano de Guadalajara, enfrenta riesgo crítico.</li>
+    <li>Los sistemas actuales (satélites, cámaras fijas y reportes ciudadanos) son reactivos, no predictivos.</li>
+    <li>Faltan herramientas de detección temprana basadas en IA.</li>
+  </ul>
+  <p class="punch">El vacío tecnológico no está en apagar el fuego, está en predecirlo.</p>
+
+  <h2>La solución</h2>
+  <div class="pair">
+    <div class="box hot">
+      <h3>Sistema Heimdall</h3>
+      <em>Inteligencia Geográfica Predictiva</em>
+      <p>Analiza variables históricas, topográficas y meteorológicas para estimar la probabilidad de ignición antes de que ocurra.</p>
+      <p>Genera mapas de riesgo en tiempo real para orientar la vigilancia.</p>
+    </div>
+    <div class="box ok">
+      <h3>SIF, IA local</h3>
+      <em>Modelo de 27 mil millones de parámetros</em>
+      <p>Traduce los datos complejos de Heimdall en decisiones operativas claras, comunicadas en lenguaje natural.</p>
+      <p>Opera localmente sin depender de internet, garantizando disponibilidad en campo.</p>
+    </div>
+  </div>
+  <div class="keys">
+    <div><small>Componente de innovación</small><b>Modelo predictivo + IA operativa</b></div>
+    <div><small>Valor agregado</small><b>Predicción, no reacción</b></div>
+  </div>
+
+  <h2>Cronograma</h2>
+  <p style="color:var(--green);font-style:italic">Lo logrado hasta este momento</p>
+
+  <div class="prog">
+    <div class="prog-top"><span>Planeación</span><span>100%</span></div>
+    <div class="track" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="Planeación"><div class="fill" style="--v:100%"></div></div>
+    <p>Planteamiento del problema y propuesta de solución.</p>
+  </div>
+  <div class="prog">
+    <div class="prog-top"><span>Recopilación de datos</span><span>50%</span></div>
+    <div class="track" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" aria-label="Recopilación de datos"><div class="fill" style="--v:50%"></div></div>
+    <p>Investigación y procesado de datos históricos y metodológicos.</p>
+  </div>
+  <div class="prog">
+    <div class="prog-top"><span>SIF</span><span>40%</span></div>
+    <div class="track" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" aria-label="SIF"><div class="fill" style="--v:40%"></div></div>
+    <p>Estructura, diseño y flujo del modelo intérprete y asistente.</p>
+  </div>
+  <div class="prog">
+    <div class="prog-top"><span>Heimdall</span><span>10%</span></div>
+    <div class="track" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" aria-label="Heimdall"><div class="fill fire" style="--v:10%"></div></div>
+    <p>Desarrollo del prototipo funcional del modelo predictivo de incendios.</p>
+  </div>
+  <div class="prog">
+    <div class="prog-top"><span>Dashboard</span><span>35%</span></div>
+    <div class="track" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" aria-label="Dashboard"><div class="fill fire" style="--v:35%"></div></div>
+    <p>Integración de ambos modelos en una interfaz informativa e interactiva.</p>
+  </div>
+  <div class="prog pending">
+    <div class="prog-top"><span>Pruebas y documentación</span><span>Siguiente</span></div>
+    <div class="track" aria-hidden="true"></div>
+    <p>Prueba piloto en campo con brigadas forestales y autoridades de Protección Civil, y documentación del sistema.</p>
+  </div>
+  <p class="note">El proyecto está previsto a cuatro años, de febrero de 2026 a principios de 2030.</p>
+
+  <h2>Presupuesto</h2>
+  <p style="color:var(--green);font-style:italic">Presupuesto a 48 meses, en pesos mexicanos</p>
+  <div class="row"><span>Personal (5 personas)</span><b>3,860,865.15</b></div>
+  <div class="row"><span>Hardware y contingencia</span><b>496,650.67</b></div>
+  <div class="row"><span>Electricidad (48 meses)</span><b>18,507.45</b></div>
+  <div class="row total"><span>Total estimado</span><b>≈ 4.38 millones</b></div>
+
+  <div class="box hot" style="margin-top:1.6rem">
+    <h3>Incendio en zona de “El 18”</h3>
+    <em>Costo de reparación de 124 hectáreas afectadas</em>
+    <p class="cost">20,000,000 de pesos</p>
+    <p>y hasta dos años de tiempo de recuperación.</p>
+  </div>
+  <p class="closing">Anticipar o restaurar, ¿qué importa más?</p>
+
+  <footer>
+    <p><b>Proyecto integrador.</b> Línea: Gestión Ambiental y Desastres.</p>
+    <p>Johanna Gabriela Alcantar Sánchez (LCD) y Pablo Magdiel García Álvarez (LIACD).</p>
+    <p>Bosque La Primavera, Jalisco, México. CUGDL, 2026.</p>
+  </footer>
+</main>
+</body>
+</html>
